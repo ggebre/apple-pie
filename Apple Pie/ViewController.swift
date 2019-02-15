@@ -12,8 +12,16 @@ class ViewController: UIViewController {
     var listOfWords = ["dorowot", "noodles", "soccer", "reading", "dog", "cat", "television","dresser", "plates"]
     let incorrectMovesAllowed = 7
     
-    var totalWins = 0
-    var totalLoses = 0
+    var totalWins = 0 {
+        didSet {
+            newRound()
+        }
+    }
+    var totalLoses = 0 {
+        didSet {
+            newRound()
+        }
+    }
     
     @IBOutlet weak var correctWordLabel: UILabel!
     @IBOutlet weak var treeImageView: UIImageView!
@@ -47,9 +55,15 @@ class ViewController: UIViewController {
     }
     var currentGame : Game!
     func newRound (){
-       let newWord = listOfWords.removeFirst()
-        currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters : [])
-        updateUI()
+        if !listOfWords.isEmpty {
+            let newWord = listOfWords.removeFirst()
+            currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters : [])
+            enableLetterButtons(true)
+            updateUI()
+        } else {
+            enableLetterButtons(false)
+        }
+       
     }
     func updateUI(){
         var letters = [String]()
@@ -60,6 +74,11 @@ class ViewController: UIViewController {
         correctWordLabel.text = wordWithSpacing
         scoreLabel.text = "Wins: \(totalWins), Losses: \(totalLoses)"
         treeImageView.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
+    }
+    func enableLetterButtons (_ enable: Bool){
+        for button in letterButtons {
+            button.isEnabled = enable
+        }
     }
 
 
