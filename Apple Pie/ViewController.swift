@@ -43,6 +43,7 @@ class ViewController: UIViewController {
         updateUI()
     }
     func updateUI(){
+        correctWordLabel.text = currentGame.formattedWord
         scoreLabel.text = "Wins: \(totalWins), Losses: \(totalLoses)"
         treeImageView.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
     }
