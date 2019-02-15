@@ -9,7 +9,12 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    var listOfWords = ["doro wot", "noodles", "soccer", "reading", "dog", "cat", "television","dresser", "plates"]
+    let incorrectMovesAllowed = 7
+    
+    var totalWins = 0
+    var totalLoses = 0
+    
     @IBOutlet weak var correctWordLabel: UILabel!
     @IBOutlet weak var treeImageView: UIImageView!
     
@@ -23,6 +28,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        newRound()
+    }
+    func newRound (){
+        
     }
 
 
