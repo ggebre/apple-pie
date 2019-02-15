@@ -9,7 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    var listOfWords = ["doro wot", "noodles", "soccer", "reading", "dog", "cat", "television","dresser", "plates"]
+    var listOfWords = ["dorowot", "noodles", "soccer", "reading", "dog", "cat", "television","dresser", "plates"]
     let incorrectMovesAllowed = 7
     
     var totalWins = 0
@@ -43,7 +43,12 @@ class ViewController: UIViewController {
         updateUI()
     }
     func updateUI(){
-        correctWordLabel.text = currentGame.formattedWord
+        var letters = [String]()
+        for letter in currentGame.formattedWord {
+            letters.append(String(letter))
+        }
+        let wordWithSpacing = letters.joined(separator: " ")
+        correctWordLabel.text = wordWithSpacing
         scoreLabel.text = "Wins: \(totalWins), Losses: \(totalLoses)"
         treeImageView.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
     }
