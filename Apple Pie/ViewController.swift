@@ -27,7 +27,7 @@ class ViewController: UIViewController {
         let letterString = sender.title(for: .normal)!
         let letter = Character(letterString.lowercased())
         currentGame.playerGuessed(letter: letter)
-        updateUI()
+        updateGameState()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +35,15 @@ class ViewController: UIViewController {
         
         newRound()
         
+    }
+    func updateGameState(){
+        if currentGame.incorrectMovesRemaining == 0{
+            totalLoses += 1
+        }else if currentGame.word == currentGame.formattedWord {
+            totalWins += 1
+        } else {
+            updateUI()
+        }
     }
     var currentGame : Game!
     func newRound (){
