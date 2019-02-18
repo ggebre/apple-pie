@@ -22,7 +22,16 @@ class ViewController: UIViewController {
             newRound()
         }
     }
-    
+    var correctGuess = 0 {
+        didSet {
+            
+        }
+    }
+    var correctGuessupdate = 0 {
+        didSet {
+            newRound()
+    }
+}
     @IBOutlet weak var correctWordLabel: UILabel!
     @IBOutlet weak var treeImageView: UIImageView!
     
@@ -35,6 +44,8 @@ class ViewController: UIViewController {
         let letterString = sender.title(for: .normal)!
         let letter = Character(letterString.lowercased())
         currentGame.playerGuessed(letter: letter)
+        correctGuess = currentGame.correctGuesses
+        print(correctGuess)
         updateGameState()
         
     }
@@ -48,8 +59,10 @@ class ViewController: UIViewController {
     func updateGameState(){
         if currentGame.incorrectMovesRemaining == 0{
             totalLoses += 1
+            
         }else if currentGame.word == currentGame.formattedWord {
             totalWins += 1
+            correctGuessupdate += 5
         } else {
             updateUI()
         }
@@ -58,7 +71,7 @@ class ViewController: UIViewController {
     func newRound (){
         if !listOfWords.isEmpty {
             let newWord = listOfWords.removeFirst()
-            currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters : [])
+            currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters : [], correctGuesses: correctGuess)
             enableLetterButtons(true)
             updateUI()
         } else {
@@ -75,7 +88,7 @@ class ViewController: UIViewController {
         
         let wordWithSpacing = letters.joined(separator: " ")
         correctWordLabel.text = wordWithSpacing
-        scoreLabel.text = "Wins: \(totalWins), Losses: \(totalLoses)"
+        scoreLabel.text = "Wins: \(totalWins), Losses: \(totalLoses), score:\(correctGuess + correctGuessupdate)"
         treeImageView.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
     }
     func enableLetterButtons (_ enable: Bool){
