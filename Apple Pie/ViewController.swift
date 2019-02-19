@@ -22,7 +22,12 @@ class ViewController: UIViewController {
             newRound()
         }
     }
-    var correctGuess = 0 {
+    var correctGuess0 = 0 {
+        didSet {
+            
+        }
+    }
+    var correctGuess1 = 0 {
         didSet {
             
         }
@@ -32,7 +37,7 @@ class ViewController: UIViewController {
             newRound()
     }
 }
-    var players : [Int] = [1, 2]
+    var playerSwitch : Int = 0
     @IBOutlet weak var correctWordLabel: UILabel!
     @IBOutlet weak var treeImageView: UIImageView!
     
@@ -45,14 +50,17 @@ class ViewController: UIViewController {
         let letterString = sender.title(for: .normal)!
         let letter = Character(letterString.lowercased())
         currentGame.playerGuessed(letter: letter)
-        print(currentGame.players)
-        if currentGame.players == 0 {
-            correctGuess = currentGame.correctGuesses0
+        //print(currentGame.players)
+        playerSwitch = currentGame.players
+        if playerSwitch == 0 {
+            correctGuess0 = currentGame.correctGuesses0
         } else {
-            correctGuess = currentGame.correctGuesses1
+            correctGuess1 = currentGame.correctGuesses1
         }
         
-        print(correctGuess)
+        print(correctGuess0)
+        print(correctGuess1)
+        //print(currentGame.players)
         updateGameState()
         
     }
@@ -80,7 +88,7 @@ class ViewController: UIViewController {
             let randInt = Int.random(in: 0..<listOfWords.count)
             //let newWord = listOfWords.removeFirst()
             let newWord = listOfWords.remove(at: randInt)
-            currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters : [], correctGuesses0: correctGuess,correctGuesses1: correctGuess, players: 0)
+            currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters : [], correctGuesses0: correctGuess0,correctGuesses1: correctGuess1, players: playerSwitch)
             enableLetterButtons(true)
             updateUI()
         } else {
@@ -97,7 +105,7 @@ class ViewController: UIViewController {
         
         let wordWithSpacing = letters.joined(separator: " ")
         correctWordLabel.text = wordWithSpacing
-        scoreLabel.text = "Wins: \(totalWins), Losses: \(totalLoses), score:\(correctGuess + correctGuessupdate), player:\(currentGame.players)"
+        scoreLabel.text = "Wins: \(totalWins),  Losses: \(totalLoses),  player 1 score:\(correctGuess0),    player 2 score:\(correctGuess1),     player:\(currentGame.players)"
         treeImageView.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
     }
     func enableLetterButtons (_ enable: Bool){
