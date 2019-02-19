@@ -32,6 +32,7 @@ class ViewController: UIViewController {
             newRound()
     }
 }
+    var players : [Int] = [1, 2]
     @IBOutlet weak var correctWordLabel: UILabel!
     @IBOutlet weak var treeImageView: UIImageView!
     
@@ -44,7 +45,13 @@ class ViewController: UIViewController {
         let letterString = sender.title(for: .normal)!
         let letter = Character(letterString.lowercased())
         currentGame.playerGuessed(letter: letter)
-        correctGuess = currentGame.correctGuesses
+        print(currentGame.players)
+        if currentGame.players == 0 {
+            correctGuess = currentGame.correctGuesses0
+        } else {
+            correctGuess = currentGame.correctGuesses1
+        }
+        
         print(correctGuess)
         updateGameState()
         
@@ -70,8 +77,10 @@ class ViewController: UIViewController {
     var currentGame : Game!
     func newRound (){
         if !listOfWords.isEmpty {
-            let newWord = listOfWords.removeFirst()
-            currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters : [], correctGuesses: correctGuess)
+            let randInt = Int.random(in: 0..<listOfWords.count)
+            //let newWord = listOfWords.removeFirst()
+            let newWord = listOfWords.remove(at: randInt)
+            currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters : [], correctGuesses0: correctGuess,correctGuesses1: correctGuess, players: 0)
             enableLetterButtons(true)
             updateUI()
         } else {
@@ -88,7 +97,7 @@ class ViewController: UIViewController {
         
         let wordWithSpacing = letters.joined(separator: " ")
         correctWordLabel.text = wordWithSpacing
-        scoreLabel.text = "Wins: \(totalWins), Losses: \(totalLoses), score:\(correctGuess + correctGuessupdate)"
+        scoreLabel.text = "Wins: \(totalWins), Losses: \(totalLoses), score:\(correctGuess + correctGuessupdate), player:\(currentGame.players)"
         treeImageView.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
     }
     func enableLetterButtons (_ enable: Bool){

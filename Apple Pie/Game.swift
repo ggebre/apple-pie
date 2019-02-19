@@ -9,18 +9,38 @@
 import Foundation
 
 struct Game {
+    //var playerName : String
     var word : String
     var incorrectMovesRemaining : Int
     var guessedLetters : [Character]
-    var correctGuesses: Int
-    
+    var correctGuesses0: Int
+    var correctGuesses1: Int
+    var players = 0 {
+        didSet {
+            
+        }
+    }
+//    static var currentPlayer : Game = Game(playerName : "", word: "", incorrectMovesRemaining: 0, guessedLetters: [], correctGuesses: 0, players: [])
+//    
+//    static func newPlayer (newplayer : Game){
+//            currentPlayer = newplayer
+//    }
     mutating func playerGuessed(letter: Character){
         guessedLetters.append(letter)
         if !word.contains(letter){
             incorrectMovesRemaining -= 1
-            
+            if players == 0{
+                players = 1
+            } else {
+                players = 0
+            }
         } else {
-            correctGuesses += 1
+            if players == 0{
+                correctGuesses0 += 1
+            } else {
+                correctGuesses1 += 1
+            }
+            
         }
     }
     var formattedWord : String {
