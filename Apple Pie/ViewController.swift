@@ -22,16 +22,11 @@ class ViewController: UIViewController {
             newRound()
         }
     }
-    var correctGuess0 = 0 {
-        didSet {
-            
-        }
-    }
-    var correctGuess1 = 0 {
-        didSet {
-            
-        }
-    }
+    //correct guess by player 1
+    var correctGuess0 = 0
+    //correct guess by player 2
+    var correctGuess1 = 0 
+    
     var correctGuessupdate = 0 {
         didSet {
             newRound()
@@ -50,7 +45,7 @@ class ViewController: UIViewController {
         let letterString = sender.title(for: .normal)!
         let letter = Character(letterString.lowercased())
         currentGame.playerGuessed(letter: letter)
-        //print(currentGame.players)
+        
         playerSwitch = currentGame.players
         if playerSwitch == 0 {
             correctGuess0 = currentGame.correctGuesses0
@@ -58,9 +53,7 @@ class ViewController: UIViewController {
             correctGuess1 = currentGame.correctGuesses1
         }
         
-        print(correctGuess0)
-        print(correctGuess1)
-        //print(currentGame.players)
+        
         updateGameState()
         
     }
