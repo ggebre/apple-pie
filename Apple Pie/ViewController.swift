@@ -37,6 +37,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var correctWordLabel: UILabel!
     @IBOutlet weak var treeImageView: UIImageView!
     
+    @IBOutlet weak var completeWordOutlet: UIView!
+    @IBOutlet weak var letterButtonsOutlet: UIStackView!
     @IBOutlet weak var scoreLabel: UILabel!
     
     @IBOutlet weak var scoreLabel2: UILabel!
@@ -44,6 +46,10 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var activePlayer: UILabel!
     
+    @IBAction func completeWordTapped(_ sender: UIButton) {
+        letterButtonsOutlet.isHidden = true
+        completeWordOutlet.isHidden = false
+    }
     @IBOutlet var letterButtons: [UIButton]!
     @IBAction func buttonTapped(_ sender: UIButton) {
         sender.isEnabled = false
@@ -69,7 +75,8 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         newRound()
-        
+        completeWordOutlet.isHidden = true
+        self.hideKeyboardWhenTappedAround()
     }
     func updateGameState(){
         if currentGame.incorrectMovesRemaining == 0{
@@ -109,7 +116,7 @@ class ViewController: UIViewController {
         
         let wordWithSpacing = letters.joined(separator: " ")
         correctWordLabel.text = wordWithSpacing
-        scoreLabel.text = "Wins: \(totalWins[0]),  Losses: \(totalLoses[0]),  player 1 score:\(correctGuess0), "
+        scoreLabel.text = "Wins: \(totalWins[0]),  Losses: \(totalLoses[0]),  player 1 score:\(correctGuess0)"
         scoreLabel2.text = "Wins: \(totalWins[1]),  Losses: \(totalLoses[1]),   player 2 score:\(correctGuess1)   "
         activePlayer.text = "Player\(currentGame.players + 1)'s turn."
         
@@ -130,5 +137,16 @@ class ViewController: UIViewController {
             newVar.1 += 1
         }
         return newVar
+    }
+}
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
