@@ -39,8 +39,10 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var scoreLabel: UILabel!
     
-   
+    @IBOutlet weak var scoreLabel2: UILabel!
     
+    
+    @IBOutlet weak var activePlayer: UILabel!
     
     @IBOutlet var letterButtons: [UIButton]!
     @IBAction func buttonTapped(_ sender: UIButton) {
@@ -72,18 +74,15 @@ class ViewController: UIViewController {
     func updateGameState(){
         if currentGame.incorrectMovesRemaining == 0{
             //totalLoses += 1
-            if playerSwitch == 0 {
-                totalLoses[0] += 1
-            }else {
-                totalLoses[1] += 1
-            }
+            
+            totalLoses[0] = multipleUserHandler(input1: totalLoses[0], input2: totalLoses[1], input3: playerSwitch).0
+            totalLoses[1] = multipleUserHandler(input1: totalLoses[0], input2: totalLoses[1], input3: playerSwitch).1
+            
         }else if currentGame.word == currentGame.formattedWord {
-            //totalWins += 1
-            if playerSwitch == 0 {
-                totalWins[0] += 1
-            }else {
-                totalWins[1] += 1
-            }
+            
+            totalWins[0] = multipleUserHandler(input1: totalWins[0], input2: totalWins[1], input3: playerSwitch).0
+            totalWins[1] = multipleUserHandler(input1: totalWins[0], input2: totalWins[1], input3: playerSwitch).1
+            
             
         } else {
             updateUI()
@@ -110,7 +109,9 @@ class ViewController: UIViewController {
         
         let wordWithSpacing = letters.joined(separator: " ")
         correctWordLabel.text = wordWithSpacing
-        scoreLabel.text = "Wins: \(totalWins[0]),  Losses: \(totalLoses[0]),  player 1 score:\(correctGuess0), Wins: \(totalWins[1]),  Losses: \(totalLoses[1]),   player 2 score:\(correctGuess1),     player:\(currentGame.players)"
+        scoreLabel.text = "Wins: \(totalWins[0]),  Losses: \(totalLoses[0]),  player 1 score:\(correctGuess0), "
+        scoreLabel2.text = "Wins: \(totalWins[1]),  Losses: \(totalLoses[1]),   player 2 score:\(correctGuess1)   "
+        activePlayer.text = "Player\(currentGame.players + 1)'s turn."
         
         treeImageView.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
     }
@@ -120,5 +121,14 @@ class ViewController: UIViewController {
         }
     }
     
-    
+    func multipleUserHandler (input1: Int, input2: Int, input3: Int)->(Int, Int){
+        var newVar = (input1, input2)
+        
+        if input3 == 0{
+            newVar.0 += 1
+        }else{
+            newVar.1 += 1
+        }
+        return newVar
+    }
 }
